@@ -7,10 +7,12 @@ import { PrismaService } from 'src/prisma_client/prisma/prisma.service';
 @Injectable()
 export class UserService {
   constructor(private prisma: PrismaService) {}
-  create(data: CreateUserDto): Promise<User> {
-    return this.prisma.user.create({
-      data,
-    });
+
+  create(data: CreateUserDto) {
+    return `This action returns all user`;
+    // this.prisma.user.create({
+    //   data,
+    // });
   }
 
   findAll() {
