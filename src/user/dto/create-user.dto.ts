@@ -1,1 +1,7 @@
-export class CreateUserDto {}
+// class Task
+
+export class CreateUserDto {
+  //   id: number;
+  email: string;
+  name: string;
+}
