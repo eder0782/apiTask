@@ -3,14 +3,22 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Prisma, User } from '@prisma/client';
 import { PrismaService } from 'src/prisma_client/prisma/prisma.service';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
   constructor(private prisma: PrismaService) {}
 
   async create(data: CreateUserDto): Promise<User | undefined> {
+    const saltOrRounds = 10;
+    const hash = await bcrypt.hash(data.password, saltOrRounds);
+
     return await this.prisma.user.create({
-      data,
+      data: {
+        email: data.email,
+        name: data.name,
+        password: hash,
+      },
     });
   }
 
@@ -29,10 +37,13 @@ export class UserService {
       data,
       where: { id },
     });
-    // `This action updates a #${id} user`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: number) {
+    return await this.prisma.user.delete({
+      where: {
+        id,
+      },
+    });
   }
 }
