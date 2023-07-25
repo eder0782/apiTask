@@ -25,28 +25,28 @@ export class TasksController {
   @Post()
   create(
     @Body() createTaskDto: CreateTaskDto,
-    @Query('userId') userId: number,
+    @Query('userId') userId: string,
   ) {
     return this.tasksService.create(userId, createTaskDto);
   }
 
-  @Get(':id')
-  findAll(@Param('id') id: number) {
-    return this.tasksService.findAll(id);
+  @Get(':userId')
+  findAll(@Param('userId') userId: string) {
+    return this.tasksService.findAll(userId);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.tasksService.findOne(+id);
-  }
+  // @Get(':id')
+  // findOne(@Param('id') id: string) {
+  //   return this.tasksService.findOne(id);
+  // }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
-    return this.tasksService.update(+id, updateTaskDto);
+    return this.tasksService.update(id, updateTaskDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.tasksService.remove(+id);
+    return this.tasksService.remove(id);
   }
 }

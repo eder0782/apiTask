@@ -33,12 +33,12 @@ export class CreateTaskDto {
   checked?: boolean;
 
   @ApiProperty({
-    description: 'Data da tarefa',
-    example: '2023-05-02',
+    description: 'Data da tarefa(Formato UTC)',
+    example: '2023-07-02T00:00:00Z',
   })
   @IsNotEmpty()
   expirationDate: Date;
   @IsOptional()
   //   @IsNumber()
-  userId: number;
+  userId: string;
 }

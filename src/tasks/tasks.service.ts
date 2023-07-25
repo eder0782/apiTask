@@ -8,29 +8,43 @@ import { PrismaService } from 'src/prisma_client/prisma/prisma.service';
 export class TasksService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(userId: number, createTaskDto: CreateTaskDto): Promise<Task> {
+  async create(userId: string, createTaskDto: CreateTaskDto): Promise<Task> {
     const data: Prisma.TaskCreateInput = {
       ...createTaskDto,
-      user: { connect: { id: Number(userId) } },
+      user: { connect: { id: userId } },
     };
     return await this.prisma.task.create({ data });
   }
 
   async findAll(userId: any): Promise<Task[]> {
     return await this.prisma.task.findMany({
-      where: { userId: Number(userId) },
+      where: { userId: userId },
     });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} task`;
+  // findOne(id: string) {
+  //   return `This action returns a #${id} task`;
+  // }
+
+  async update(id: string, updateTaskDto: UpdateTaskDto) {
+    const { userId, ...rest } = updateTaskDto;
+    const data: Prisma.TaskUpdateInput = {
+      ...rest,
+      user: { connect: { id: userId } },
+    };
+    return await this.prisma.task.update({
+      data,
+      where: {
+        id,
+      },
+    });
   }
 
-  update(id: number, updateTaskDto: UpdateTaskDto) {
-    return `This action updates a #${id} task`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} task`;
+  async remove(id: string): Promise<Task> {
+    return await this.prisma.task.delete({
+      where: {
+        id,
+      },
+    });
   }
 }
